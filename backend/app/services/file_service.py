@@ -21,7 +21,8 @@ MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024 * 1024  # 5 GB limit
 
 def sanitize_filename(filename: str) -> str:
     """Sanitizes user-supplied filename against path traversal and control characters."""
-    clean_name = os.path.basename(filename).strip()
+    clean_name = filename.replace("\\", "/")
+    clean_name = os.path.basename(clean_name).strip()
     clean_name = re.sub(r"[^\w\s\.-]", "_", clean_name)
     return clean_name or "file.bin"
 
