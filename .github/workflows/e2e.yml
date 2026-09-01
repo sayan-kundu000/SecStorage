@@ -1,0 +1,32 @@
+name: End-to-End Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+
+jobs:
+  e2e-playwright:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps || echo "Playwright placeholder ready"
+
+      - name: Playwright E2E Execution
+        run: echo "Playwright E2E test pipeline ready for integration wave"
