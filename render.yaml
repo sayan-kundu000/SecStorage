@@ -1,0 +1,34 @@
+# Render Infrastructure-as-Code Blueprint for SecStorage Backend
+
+services:
+  - type: web
+    name: secstorage-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "cd backend && pip install uv && uv pip install --system -r pyproject.toml || pip install -e ."
+    startCommand: "cd backend && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: CORS_ORIGINS
+        value: '["https://secstorage.vercel.app"]'
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET
+        generateValue: true
+      - key: STORAGE_ENDPOINT_URL
+        sync: false
+      - key: STORAGE_BUCKET_NAME
+        value: secstorage-objects
+      - key: STORAGE_ACCESS_KEY_ID
+        sync: false
+      - key: STORAGE_SECRET_ACCESS_KEY
+        sync: false
