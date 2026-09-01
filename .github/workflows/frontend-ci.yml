@@ -6,11 +6,13 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-ci.yml'
+      - '.gitignore'
   pull_request:
     branches: [ main, develop ]
     paths:
       - 'frontend/**'
       - '.github/workflows/frontend-ci.yml'
+      - '.gitignore'
 
 jobs:
   test-frontend:
