@@ -193,7 +193,9 @@ async def test_permanent_delete_file(trash_test_setup):
         )
 
         # Permanent purge
-        with patch("app.services.trash_service.StorageService.delete_object", new_callable=AsyncMock) as mock_del:
+        with patch(
+            "app.services.trash_service.StorageService.delete_object", new_callable=AsyncMock
+        ) as mock_del:
             purge_resp = await ac.delete(
                 f"/api/v1/trash/files/{file1.id}",
                 headers={"Authorization": f"Bearer {token}"},
@@ -220,7 +222,9 @@ async def test_recursive_trash_and_permanent_delete_folder(trash_test_setup):
         assert trash_resp.status_code == 204
 
         # Permanent delete folder
-        with patch("app.services.trash_service.StorageService.delete_object", new_callable=AsyncMock) as mock_del:
+        with patch(
+            "app.services.trash_service.StorageService.delete_object", new_callable=AsyncMock
+        ) as mock_del:
             purge_resp = await ac.delete(
                 f"/api/v1/trash/folders/{parent.id}",
                 headers={"Authorization": f"Bearer {token}"},

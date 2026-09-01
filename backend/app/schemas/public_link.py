@@ -15,7 +15,9 @@ class PublicLinkCreate(BaseModel):
     password: str | None = Field(
         default=None, min_length=4, max_length=128, description="Optional password protection"
     )
-    expires_at: datetime | None = Field(default=None, description="Optional UTC expiration timestamp")
+    expires_at: datetime | None = Field(
+        default=None, description="Optional UTC expiration timestamp"
+    )
     allow_download: bool = Field(default=True, description="True if binary download is permitted")
     permission: Literal["VIEWER"] = Field(default="VIEWER", description="Public permission level")
 
@@ -37,9 +39,13 @@ class PublicLinkResponse(BaseModel):
     resource_id: uuid.UUID
     resource_type: Literal["file", "folder"]
     resource_name: str | None = None
-    token: str | None = Field(default=None, description="Raw public token (returned on creation/resolution)")
+    token: str | None = Field(
+        default=None, description="Raw public token (returned on creation/resolution)"
+    )
     url: str | None = Field(default=None, description="Complete public share URL")
-    has_password: bool = Field(default=False, description="True if link requires password verification")
+    has_password: bool = Field(
+        default=False, description="True if link requires password verification"
+    )
     expires_at: datetime | None = None
     allow_download: bool = True
     permission: str = "VIEWER"

@@ -29,13 +29,27 @@ async def search_resources(
     type: Literal["file", "folder", "all"] = Query("all", description="Resource type filter"),
     mime_type: str | None = Query(None, alias="mimeType", description="MIME content type filter"),
     extension: str | None = Query(None, description="File extension filter"),
-    min_size: int | None = Query(None, alias="minSize", ge=0, description="Minimum size bytes filter"),
-    max_size: int | None = Query(None, alias="maxSize", ge=0, description="Maximum size bytes filter"),
-    created_after: datetime | None = Query(None, alias="createdAfter", description="Created after UTC timestamp"),
-    created_before: datetime | None = Query(None, alias="createdBefore", description="Created before UTC timestamp"),
-    updated_after: datetime | None = Query(None, alias="updatedAfter", description="Updated after UTC timestamp"),
-    updated_before: datetime | None = Query(None, alias="updatedBefore", description="Updated before UTC timestamp"),
-    folder_id: uuid.UUID | None = Query(None, alias="folderId", description="Container folder ID filter"),
+    min_size: int | None = Query(
+        None, alias="minSize", ge=0, description="Minimum size bytes filter"
+    ),
+    max_size: int | None = Query(
+        None, alias="maxSize", ge=0, description="Maximum size bytes filter"
+    ),
+    created_after: datetime | None = Query(
+        None, alias="createdAfter", description="Created after UTC timestamp"
+    ),
+    created_before: datetime | None = Query(
+        None, alias="createdBefore", description="Created before UTC timestamp"
+    ),
+    updated_after: datetime | None = Query(
+        None, alias="updatedAfter", description="Updated after UTC timestamp"
+    ),
+    updated_before: datetime | None = Query(
+        None, alias="updatedBefore", description="Updated before UTC timestamp"
+    ),
+    folder_id: uuid.UUID | None = Query(
+        None, alias="folderId", description="Container folder ID filter"
+    ),
     starred: bool | None = Query(None, description="Filter by user starred status"),
     sort_by: Literal["name", "createdAt", "updatedAt", "size"] = Query(
         "name", alias="sortBy", description="Sort by field"

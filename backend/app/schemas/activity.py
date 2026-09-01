@@ -12,7 +12,9 @@ class ActivityResponse(BaseModel):
     id: uuid.UUID = Field(..., description="Unique event identifier")
     user_id: uuid.UUID = Field(..., description="Actor user identifier")
     action: str = Field(..., description="Action name or event type")
-    resource_type: str = Field(..., description="Target resource domain type (FILE, FOLDER, USER, SYSTEM)")
+    resource_type: str = Field(
+        ..., description="Target resource domain type (FILE, FOLDER, USER, SYSTEM)"
+    )
     resource_id: uuid.UUID = Field(..., description="Target resource identifier")
     metadata_json: str | None = Field(default=None, description="Structured JSON event metadata")
     ip_address: str | None = Field(default=None, description="Actor IP address if logged")

@@ -35,9 +35,10 @@ class SearchService:
         shared_file_ids: set[uuid.UUID] = set()
         shared_folder_ids: set[uuid.UUID] = set()
         try:
-            shared_file_ids, shared_folder_ids = await self.auth_service.get_accessible_shared_resource_ids(
-                user.id
-            )
+            (
+                shared_file_ids,
+                shared_folder_ids,
+            ) = await self.auth_service.get_accessible_shared_resource_ids(user.id)
         except Exception:
             pass  # Fall back to user ownership if shared lookup fails
 

@@ -47,7 +47,11 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         # Allow trusted frontend origins to frame storage preview documents (e.g. PDF/media embeds)
         is_storage_preview = "/storage/download" in request.url.path
         if is_storage_preview:
-            origins = list(settings.CORS_ORIGINS) if isinstance(settings.CORS_ORIGINS, list) else [settings.CORS_ORIGINS]
+            origins = (
+                list(settings.CORS_ORIGINS)
+                if isinstance(settings.CORS_ORIGINS, list)
+                else [settings.CORS_ORIGINS]
+            )
             if settings.DEBUG or settings.ENVIRONMENT == "development":
                 for dev_origin in ("http://localhost:*", "http://127.0.0.1:*"):
                     if dev_origin not in origins:
@@ -60,4 +64,3 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             response.headers["X-Frame-Options"] = "DENY"
 
         return response
-

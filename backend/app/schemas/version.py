@@ -18,7 +18,9 @@ class FileVersionResponse(BaseModel):
     checksum: str | None = Field(default=None, description="SHA-256 binary checksum")
     created_by: uuid.UUID | None = Field(default=None, description="User ID of version creator")
     created_at: datetime = Field(..., description="Version creation timestamp")
-    is_current: bool = Field(default=False, description="True if this version is the active file version")
+    is_current: bool = Field(
+        default=False, description="True if this version is the active file version"
+    )
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -26,7 +28,9 @@ class FileVersionResponse(BaseModel):
 class FileVersionListResponse(BaseModel):
     """Paginated file version history list."""
 
-    versions: list[FileVersionResponse] = Field(default_factory=list, description="List of file versions")
+    versions: list[FileVersionResponse] = Field(
+        default_factory=list, description="List of file versions"
+    )
     total: int = Field(..., description="Total count of historical versions")
     current_version_number: int = Field(..., description="Active current version number")
 

@@ -30,7 +30,9 @@ class VersionService:
         self.storage_service = StorageService()
         self.activity_service = ActivityService(db_session)
 
-    async def create_initial_version(self, file_entity: File, creator_id: uuid.UUID | None = None) -> FileVersion:
+    async def create_initial_version(
+        self, file_entity: File, creator_id: uuid.UUID | None = None
+    ) -> FileVersion:
         """Creates Version 1 record when a file upload is confirmed READY."""
         existing = await self.version_repo.get_by_file_and_number(file_entity.id, 1)
         if existing:
@@ -130,7 +132,9 @@ class VersionService:
         version_dtos: list[FileVersionResponse] = []
         for v in versions:
             dto = FileVersionResponse.model_validate(v)
-            dto.is_current = (v.version_number == max_ver_num) or (v.storage_key == file_ent.storage_key)
+            dto.is_current = (v.version_number == max_ver_num) or (
+                v.storage_key == file_ent.storage_key
+            )
             version_dtos.append(dto)
 
         return FileVersionListResponse(
@@ -160,7 +164,9 @@ class VersionService:
 
         max_ver_num = await self.version_repo.get_max_version_number(file_id)
         dto = FileVersionResponse.model_validate(ver)
-        dto.is_current = (ver.version_number == max_ver_num) or (ver.storage_key == file_ent.storage_key)
+        dto.is_current = (ver.version_number == max_ver_num) or (
+            ver.storage_key == file_ent.storage_key
+        )
         return dto
 
     async def generate_version_download_url(

@@ -38,7 +38,9 @@ class ShareService:
         folder_id: uuid.UUID | None = None,
     ) -> ShareResponse:
         """Grants or updates user permission share on a file or folder."""
-        if (file_id is None and folder_id is None) or (file_id is not None and folder_id is not None):
+        if (file_id is None and folder_id is None) or (
+            file_id is not None and folder_id is not None
+        ):
             raise ValidationError("Exactly one of 'file_id' or 'folder_id' must be specified")
 
         # 1. Resolve grantee user by email
@@ -279,7 +281,10 @@ class ShareService:
             if not folder_ent or folder_ent.deleted_at is not None:
                 raise ResourceNotFoundError("Folder entity not found")
             await self.auth_service.require_resource_permission(
-                user=user, resource=folder_ent, resource_type=ResourceType.FOLDER, action=Action.SHARE
+                user=user,
+                resource=folder_ent,
+                resource_type=ResourceType.FOLDER,
+                action=Action.SHARE,
             )
             shares = await self.share_repo.list_shares_for_folder(folder_id)
             res = []

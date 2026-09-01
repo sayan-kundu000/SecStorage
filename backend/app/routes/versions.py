@@ -72,7 +72,9 @@ async def download_file_version(
 ) -> APIResponse[DownloadUrlResponse]:
     """Generates a temporary storage download signed URL for a specific historical version."""
     service = VersionService(db)
-    result = await service.generate_version_download_url(current_user, file_id=file_id, version_id=version_id)
+    result = await service.generate_version_download_url(
+        current_user, file_id=file_id, version_id=version_id
+    )
     return APIResponse(
         success=True,
         data=result,

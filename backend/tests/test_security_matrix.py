@@ -73,7 +73,11 @@ async def sec_matrix_setup(db_session):
     # Create File for Owner inside folder
     file_svc = FileService(db_session)
     init_res = await file_svc.initiate_upload(
-        user=owner, filename="classified.pdf", content_type="application/pdf", size_bytes=1000, folder_id=folder.id
+        user=owner,
+        filename="classified.pdf",
+        content_type="application/pdf",
+        size_bytes=1000,
+        folder_id=folder.id,
     )
     file_ent = await file_svc.confirm_upload(user=owner, file_id=init_res.file_id)
 
@@ -114,15 +118,21 @@ async def test_owner_full_permissions(async_client: AsyncClient, sec_matrix_setu
     token = create_access_token(owner.id)
 
     # Download
-    r1 = await async_client.get(f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"})
+    r1 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r1.status_code == 200
 
     # Versions
-    r2 = await async_client.get(f"/api/v1/files/{file_ent.id}/versions", headers={"Authorization": f"Bearer {token}"})
+    r2 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/versions", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r2.status_code == 200
 
     # Preview
-    r3 = await async_client.get(f"/api/v1/files/{file_ent.id}/preview", headers={"Authorization": f"Bearer {token}"})
+    r3 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/preview", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r3.status_code == 200
 
 
@@ -134,11 +144,15 @@ async def test_viewer_read_download_only(async_client: AsyncClient, sec_matrix_s
     token = create_access_token(viewer.id)
 
     # Download -> 200 OK
-    r1 = await async_client.get(f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"})
+    r1 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r1.status_code == 200
 
     # Delete -> 403 Forbidden
-    r2 = await async_client.delete(f"/api/v1/files/{file_ent.id}", headers={"Authorization": f"Bearer {token}"})
+    r2 = await async_client.delete(
+        f"/api/v1/files/{file_ent.id}", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r2.status_code == 403
 
 
@@ -151,23 +165,33 @@ async def test_stranger_idor_denied_all(async_client: AsyncClient, sec_matrix_se
     token = create_access_token(stranger.id)
 
     # File Download -> 403
-    r1 = await async_client.get(f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"})
+    r1 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/download", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r1.status_code == 403
 
     # Folder Details -> 403
-    r2 = await async_client.get(f"/api/v1/folders/{folder.id}", headers={"Authorization": f"Bearer {token}"})
+    r2 = await async_client.get(
+        f"/api/v1/folders/{folder.id}", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r2.status_code == 403
 
     # Versions List -> 403
-    r3 = await async_client.get(f"/api/v1/files/{file_ent.id}/versions", headers={"Authorization": f"Bearer {token}"})
+    r3 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/versions", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r3.status_code == 403
 
     # File Preview -> 403
-    r4 = await async_client.get(f"/api/v1/files/{file_ent.id}/preview", headers={"Authorization": f"Bearer {token}"})
+    r4 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/preview", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r4.status_code == 403
 
     # File Activity -> 403
-    r5 = await async_client.get(f"/api/v1/files/{file_ent.id}/activity", headers={"Authorization": f"Bearer {token}"})
+    r5 = await async_client.get(
+        f"/api/v1/files/{file_ent.id}/activity", headers={"Authorization": f"Bearer {token}"}
+    )
     assert r5.status_code == 403
 
 
@@ -180,7 +204,9 @@ async def test_admin_security_audit_access_only(async_client: AsyncClient, sec_m
     stranger_token = create_access_token(stranger.id)
     admin_token = create_access_token(admin.id)
 
-    r1 = await async_client.get("/api/v1/audit", headers={"Authorization": f"Bearer {stranger_token}"})
+    r1 = await async_client.get(
+        "/api/v1/audit", headers={"Authorization": f"Bearer {stranger_token}"}
+    )
     assert r1.status_code == 403
 
     r2 = await async_client.get("/api/v1/audit", headers={"Authorization": f"Bearer {admin_token}"})

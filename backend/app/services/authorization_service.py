@@ -227,7 +227,9 @@ class AuthorizationService:
             file_ids.add(fid)
 
         # Child folders
-        folder_stmt = select(Folder.id).where(Folder.parent_id == folder_id, Folder.deleted_at.is_(None))
+        folder_stmt = select(Folder.id).where(
+            Folder.parent_id == folder_id, Folder.deleted_at.is_(None)
+        )
         folder_rows = await self.db_session.execute(folder_stmt)
         child_folder_ids = list(folder_rows.scalars().all())
 

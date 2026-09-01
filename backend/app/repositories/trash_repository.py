@@ -228,15 +228,11 @@ class TrashRepository:
         files: list[File] = []
 
         if folder_ids:
-            res_f = await self.session.execute(
-                select(Folder).where(Folder.id.in_(folder_ids))
-            )
+            res_f = await self.session.execute(select(Folder).where(Folder.id.in_(folder_ids)))
             folders = list(res_f.scalars().all())
 
         if file_ids:
-            res_file = await self.session.execute(
-                select(File).where(File.id.in_(file_ids))
-            )
+            res_file = await self.session.execute(select(File).where(File.id.in_(file_ids)))
             files = list(res_file.scalars().all())
 
         return files, folders

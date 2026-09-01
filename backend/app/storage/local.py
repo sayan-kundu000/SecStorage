@@ -81,4 +81,8 @@ class LocalStorageProvider(StorageProvider):
             return b"SecStorage local sample content for " + storage_key.encode("utf-8")
         with open(path, "rb") as f:
             data = f.read(max_bytes)
-            return data if data else b"SecStorage local sample content for " + storage_key.encode("utf-8")
+            return (
+                data
+                if data
+                else b"SecStorage local sample content for " + storage_key.encode("utf-8")
+            )

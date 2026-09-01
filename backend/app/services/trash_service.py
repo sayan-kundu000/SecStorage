@@ -150,7 +150,9 @@ class TrashService:
         if file_ent.folder_id is not None:
             parent = await self.folder_repo.get_by_id(file_ent.folder_id)
             if not parent or parent.deleted_at is not None:
-                raise ConflictError("RESTORE_PARENT_NOT_FOUND: Original parent directory is deleted or missing")
+                raise ConflictError(
+                    "RESTORE_PARENT_NOT_FOUND: Original parent directory is deleted or missing"
+                )
 
         # Check naming conflict in destination active parent folder
         conflict = await self.trash_repo.check_active_file_name_conflict(
@@ -159,7 +161,9 @@ class TrashService:
             name=file_ent.name,
         )
         if conflict:
-            raise ConflictError("RESOURCE_NAME_CONFLICT: Active file with same name already exists in destination folder")
+            raise ConflictError(
+                "RESOURCE_NAME_CONFLICT: Active file with same name already exists in destination folder"
+            )
 
         await self.trash_repo.restore_file(file_id)
 
@@ -199,7 +203,9 @@ class TrashService:
         if folder_ent.parent_id is not None:
             parent = await self.folder_repo.get_by_id(folder_ent.parent_id)
             if not parent or parent.deleted_at is not None:
-                raise ConflictError("RESTORE_PARENT_NOT_FOUND: Original parent directory is deleted or missing")
+                raise ConflictError(
+                    "RESTORE_PARENT_NOT_FOUND: Original parent directory is deleted or missing"
+                )
 
         # Check naming conflict in destination active parent directory
         conflict = await self.trash_repo.check_active_folder_name_conflict(
@@ -208,7 +214,9 @@ class TrashService:
             name=folder_ent.name,
         )
         if conflict:
-            raise ConflictError("RESOURCE_NAME_CONFLICT: Active directory with same name already exists in destination")
+            raise ConflictError(
+                "RESOURCE_NAME_CONFLICT: Active directory with same name already exists in destination"
+            )
 
         await self.trash_repo.restore_folder_tree(folder_id)
 

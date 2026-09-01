@@ -67,7 +67,22 @@ TEXT_MIME_TYPES = {
 }
 
 TEXT_EXTENSIONS = {
-    ".txt", ".md", ".csv", ".json", ".xml", ".py", ".js", ".ts", ".css", ".html", ".log", ".yaml", ".yml", ".ini", ".conf", ".sh"
+    ".txt",
+    ".md",
+    ".csv",
+    ".json",
+    ".xml",
+    ".py",
+    ".js",
+    ".ts",
+    ".css",
+    ".html",
+    ".log",
+    ".yaml",
+    ".yml",
+    ".ini",
+    ".conf",
+    ".sh",
 }
 
 MAX_TEXT_PREVIEW_BYTES = 100 * 1024  # 100 KB limit for inline text preview
@@ -178,7 +193,15 @@ class PreviewService:
             return raw_url
 
         # 1. Image Preview
-        if clean_mime in IMAGE_MIME_TYPES or ext in {".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".svg"}:
+        if clean_mime in IMAGE_MIME_TYPES or ext in {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".webp",
+            ".gif",
+            ".bmp",
+            ".svg",
+        }:
             expires_in = 900
             now = datetime.now(UTC)
             url = await self.storage_service.generate_download_url(
@@ -212,7 +235,11 @@ class PreviewService:
             )
 
         # 3. Video Preview
-        if clean_mime in VIDEO_MIME_TYPES or ext in VIDEO_EXTENSIONS or clean_mime.startswith("video/"):
+        if (
+            clean_mime in VIDEO_MIME_TYPES
+            or ext in VIDEO_EXTENSIONS
+            or clean_mime.startswith("video/")
+        ):
             expires_in = 900
             now = datetime.now(UTC)
             url = await self.storage_service.generate_download_url(
@@ -229,7 +256,11 @@ class PreviewService:
             )
 
         # 4. Audio Preview
-        if clean_mime in AUDIO_MIME_TYPES or ext in AUDIO_EXTENSIONS or clean_mime.startswith("audio/"):
+        if (
+            clean_mime in AUDIO_MIME_TYPES
+            or ext in AUDIO_EXTENSIONS
+            or clean_mime.startswith("audio/")
+        ):
             expires_in = 900
             now = datetime.now(UTC)
             url = await self.storage_service.generate_download_url(
@@ -246,11 +277,17 @@ class PreviewService:
             )
 
         # 5. Text/Code Preview
-        if clean_mime in TEXT_MIME_TYPES or ext in TEXT_EXTENSIONS or clean_mime.startswith("text/"):
+        if (
+            clean_mime in TEXT_MIME_TYPES
+            or ext in TEXT_EXTENSIONS
+            or clean_mime.startswith("text/")
+        ):
             try:
-                raw_bytes = await self.storage_service.get_object_bytes(storage_key, max_bytes=MAX_TEXT_PREVIEW_BYTES)
+                raw_bytes = await self.storage_service.get_object_bytes(
+                    storage_key, max_bytes=MAX_TEXT_PREVIEW_BYTES
+                )
                 text = raw_bytes.decode("utf-8", errors="replace")
-                
+
                 # Security: Escape raw HTML tags so untrusted HTML content cannot execute in browser context
                 if clean_mime == "text/html" or ext == ".html":
                     text = html.escape(text)
@@ -276,4 +313,3 @@ class PreviewService:
             mime_type=clean_mime,
             message="Inline preview is not supported for this file format. Please download the file.",
         )
-

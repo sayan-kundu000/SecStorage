@@ -53,10 +53,10 @@ async def test_initial_version_creation(db_session, version_test_setup):
     """Verifies confirming an upload automatically creates Version 1."""
     file_ent = version_test_setup["file"]
     user1 = version_test_setup["user1"]
-    
+
     ver_svc = VersionService(db_session)
     res = await ver_svc.list_versions(user1, file_id=file_ent.id)
-    
+
     assert res.total == 1
     assert len(res.versions) == 1
     assert res.versions[0].version_number == 1
@@ -69,9 +69,9 @@ async def test_create_new_version_and_restore(db_session, version_test_setup):
     file_ent = version_test_setup["file"]
     user1 = version_test_setup["user1"]
     token1 = create_access_token(user1.id)
-    
+
     ver_svc = VersionService(db_session)
-    
+
     # Create Version 2
     ver2 = await ver_svc.create_new_version(
         user=user1,
@@ -86,9 +86,9 @@ async def test_create_new_version_and_restore(db_session, version_test_setup):
     # Query versions
     res = await ver_svc.list_versions(user1, file_id=file_ent.id)
     assert res.total == 2
-    
+
     v1_dto = [v for v in res.versions if v.version_number == 1][0]
-    
+
     # Restore Version 1 via API endpoint -> should create Version 3
     async with AsyncClient(
         transport=ASGITransport(app=app_instance), base_url="http://testserver"

@@ -207,4 +207,3 @@ async def delete_file(
     """Soft-deletes specified file entity after authorization check."""
     service = TrashService(db)
     await service.trash_file(user=current_user, file_id=file_id)
-

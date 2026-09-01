@@ -22,7 +22,12 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     op.add_column(
         "file_versions",
-        sa.Column("mime_type", sa.String(length=127), nullable=True, server_default="application/octet-stream"),
+        sa.Column(
+            "mime_type",
+            sa.String(length=127),
+            nullable=True,
+            server_default="application/octet-stream",
+        ),
     )
     op.add_column(
         "file_versions",

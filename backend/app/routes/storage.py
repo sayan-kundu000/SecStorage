@@ -84,4 +84,3 @@ async def local_storage_download(
 
     headers = {"Content-Disposition": disposition}
     return Response(content=data, media_type=guessed_type, headers=headers)
-

@@ -37,11 +37,12 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info(
         f"Starting SecStorage API Service (Env: {settings.ENVIRONMENT}, Debug: {settings.DEBUG})"
     )
-    
+
     # Auto-initialize database tables on startup
     async with engine.begin() as conn:
         from app.models.base import Base
         import app.models  # noqa: F401
+
         await conn.run_sync(Base.metadata.create_all)
 
     # Seed default demo user if table is empty
@@ -66,7 +67,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
                 logger.info("Auto-seeded default demo user: loginuser@example.com")
     except Exception as e:
         logger.warning(f"Could not check or seed initial demo user: {e}")
-    
+
     yield
     logger.info("Shutting down SecStorage API Service")
 

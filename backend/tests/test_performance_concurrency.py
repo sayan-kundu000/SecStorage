@@ -29,7 +29,10 @@ async def perf_test_setup(db_session):
 
     file_svc = FileService(db_session)
     init_res = await file_svc.initiate_upload(
-        user=user, filename="concurrent_test.bin", content_type="application/octet-stream", size_bytes=500
+        user=user,
+        filename="concurrent_test.bin",
+        content_type="application/octet-stream",
+        size_bytes=500,
     )
     file_ent = await file_svc.confirm_upload(user=user, file_id=init_res.file_id)
 
@@ -48,10 +51,10 @@ async def test_concurrent_version_creations(db_session, perf_test_setup):
         await ver_svc.create_new_version(
             user=user,
             file_id=file_ent.id,
-            storage_key=f"users/{user.id}/files/{file_ent.id}/v{i+2}.bin",
+            storage_key=f"users/{user.id}/files/{file_ent.id}/v{i + 2}.bin",
             size_bytes=100 * (i + 2),
             mime_type="application/octet-stream",
-            filename=f"concurrent_v{i+2}.bin",
+            filename=f"concurrent_v{i + 2}.bin",
         )
 
     res = await ver_svc.list_versions(user, file_id=file_ent.id)

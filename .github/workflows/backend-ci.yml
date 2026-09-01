@@ -38,7 +38,8 @@ jobs:
 
       - name: Check Formatting with Ruff
         run: |
-          ruff format --check . --exit-zero
+          ruff format --check .
+
 
       - name: Run Pytest
         env:

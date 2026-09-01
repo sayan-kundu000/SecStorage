@@ -143,4 +143,3 @@ async def delete_folder(
     """Recursively soft-deletes specified folder entity and subtrees after authorization check."""
     service = TrashService(db)
     await service.trash_folder(user=current_user, folder_id=folder_id)
-

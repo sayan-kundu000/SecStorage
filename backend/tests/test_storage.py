@@ -1,6 +1,5 @@
 """Integration Tests for Object Storage Engine & Signed URL Lifecycle."""
 
-
 import pytest
 from httpx import AsyncClient
 

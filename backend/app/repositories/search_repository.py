@@ -44,7 +44,12 @@ class SearchRepository:
         query_folders = params.type in ("folder", "all")
 
         # If filtering by file-only metadata (mime_type, extension, size), exclude folders
-        if params.mime_type or params.extension or params.min_size is not None or params.max_size is not None:
+        if (
+            params.mime_type
+            or params.extension
+            or params.min_size is not None
+            or params.max_size is not None
+        ):
             query_folders = False
 
         raw_q = params.q.strip()
@@ -191,7 +196,10 @@ class SearchRepository:
         # -------------------------------------------------------------
         reverse = params.sort_order == "desc"
         if params.sort_by == "name":
-            results.sort(key=lambda x: (x["type"] != "folder", x["name"].lower(), str(x["id"])), reverse=reverse)
+            results.sort(
+                key=lambda x: (x["type"] != "folder", x["name"].lower(), str(x["id"])),
+                reverse=reverse,
+            )
         elif params.sort_by == "size":
             results.sort(key=lambda x: (x["size_bytes"] or 0, str(x["id"])), reverse=reverse)
         elif params.sort_by == "createdAt":

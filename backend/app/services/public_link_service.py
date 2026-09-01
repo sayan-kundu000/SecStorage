@@ -50,7 +50,9 @@ class PublicLinkService:
         allow_download: bool = True,
     ) -> PublicLinkResponse:
         """Creates an expirable, optional password-protected public share link. Returns raw token once."""
-        if (file_id is None and folder_id is None) or (file_id is not None and folder_id is not None):
+        if (file_id is None and folder_id is None) or (
+            file_id is not None and folder_id is not None
+        ):
             raise ValidationError("Exactly one of 'file_id' or 'folder_id' must be specified")
 
         if expires_at is not None:
@@ -68,7 +70,10 @@ class PublicLinkService:
             if not file_ent or file_ent.deleted_at is not None:
                 raise ResourceNotFoundError("Target file entity not found or deleted")
             await self.auth_service.require_resource_permission(
-                user=creator, resource=file_ent, resource_type=ResourceType.FILE, action=Action.SHARE
+                user=creator,
+                resource=file_ent,
+                resource_type=ResourceType.FILE,
+                action=Action.SHARE,
             )
             res_name = file_ent.name
         else:
@@ -76,7 +81,10 @@ class PublicLinkService:
             if not folder_ent or folder_ent.deleted_at is not None:
                 raise ResourceNotFoundError("Target folder entity not found or deleted")
             await self.auth_service.require_resource_permission(
-                user=creator, resource=folder_ent, resource_type=ResourceType.FOLDER, action=Action.SHARE
+                user=creator,
+                resource=folder_ent,
+                resource_type=ResourceType.FOLDER,
+                action=Action.SHARE,
             )
             res_name = folder_ent.name
 
@@ -139,9 +147,7 @@ class PublicLinkService:
             created_at=saved_link.created_at,
         )
 
-    async def get_valid_public_link(
-        self, raw_token: str, password: str | None = None
-    ) -> LinkShare:
+    async def get_valid_public_link(self, raw_token: str, password: str | None = None) -> LinkShare:
         """Validates token, active status, expiration, and password requirements, returning LinkShare model entity."""
         token_hash = hash_public_token(raw_token)
         link = await self.public_link_repo.get_by_token(token_hash)
@@ -151,7 +157,11 @@ class PublicLinkService:
 
         if link.expires_at is not None:
             now_utc = datetime.now(timezone.utc)
-            exp = link.expires_at if link.expires_at.tzinfo else link.expires_at.replace(tzinfo=timezone.utc)
+            exp = (
+                link.expires_at
+                if link.expires_at.tzinfo
+                else link.expires_at.replace(tzinfo=timezone.utc)
+            )
             if exp <= now_utc:
                 raise ResourceNotFoundError("Public share link has expired")
 
@@ -174,7 +184,11 @@ class PublicLinkService:
         # Expiration check
         if link.expires_at is not None:
             now_utc = datetime.now(timezone.utc)
-            exp = link.expires_at if link.expires_at.tzinfo else link.expires_at.replace(tzinfo=timezone.utc)
+            exp = (
+                link.expires_at
+                if link.expires_at.tzinfo
+                else link.expires_at.replace(tzinfo=timezone.utc)
+            )
             if exp <= now_utc:
                 raise ResourceNotFoundError("Public share link has expired")
 
@@ -247,7 +261,11 @@ class PublicLinkService:
 
         if link.expires_at is not None:
             now_utc = datetime.now(timezone.utc)
-            exp = link.expires_at if link.expires_at.tzinfo else link.expires_at.replace(tzinfo=timezone.utc)
+            exp = (
+                link.expires_at
+                if link.expires_at.tzinfo
+                else link.expires_at.replace(tzinfo=timezone.utc)
+            )
             if exp <= now_utc:
                 raise ResourceNotFoundError("Public share link has expired")
 
@@ -336,7 +354,10 @@ class PublicLinkService:
             if not folder_ent or folder_ent.deleted_at is not None:
                 raise ResourceNotFoundError("Folder entity not found")
             await self.auth_service.require_resource_permission(
-                user=user, resource=folder_ent, resource_type=ResourceType.FOLDER, action=Action.SHARE
+                user=user,
+                resource=folder_ent,
+                resource_type=ResourceType.FOLDER,
+                action=Action.SHARE,
             )
             links = await self.public_link_repo.list_active_links_for_folder(folder_id)
             return [

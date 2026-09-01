@@ -25,7 +25,7 @@ class ActivityRepository:
     ) -> tuple[list[Activity], int]:
         """Queries timeline of user-initiated activities with total count."""
         base_stmt = select(Activity).where(Activity.user_id == user_id)
-        
+
         count_stmt = select(func.count()).select_from(base_stmt.subquery())
         total = (await self.session.execute(count_stmt)).scalar() or 0
 
@@ -42,7 +42,7 @@ class ActivityRepository:
             Activity.resource_type == resource_type,
             Activity.resource_id == resource_id,
         )
-        
+
         count_stmt = select(func.count()).select_from(base_stmt.subquery())
         total = (await self.session.execute(count_stmt)).scalar() or 0
 
@@ -51,12 +51,10 @@ class ActivityRepository:
 
         return items, total
 
-    async def list_audit_logs(
-        self, limit: int = 50, offset: int = 0
-    ) -> tuple[list[Activity], int]:
+    async def list_audit_logs(self, limit: int = 50, offset: int = 0) -> tuple[list[Activity], int]:
         """Queries all security audit log events system-wide."""
         base_stmt = select(Activity)
-        
+
         count_stmt = select(func.count()).select_from(base_stmt.subquery())
         total = (await self.session.execute(count_stmt)).scalar() or 0
 

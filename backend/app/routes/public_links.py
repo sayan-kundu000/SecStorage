@@ -165,7 +165,9 @@ async def download_public_link_file(
 ) -> APIResponse[DownloadUrlResponse]:
     """Generates a temporary storage download signed URL for a valid public file link."""
     service = PublicLinkService(db)
-    download_url, expires_at, file_id = await service.generate_public_download_url(token, password=password)
+    download_url, expires_at, file_id = await service.generate_public_download_url(
+        token, password=password
+    )
     return APIResponse(
         success=True,
         data=DownloadUrlResponse(file_id=file_id, download_url=download_url, expires_at=expires_at),

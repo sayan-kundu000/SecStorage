@@ -61,10 +61,6 @@ class VersionRepository:
 
     async def count_by_file_id(self, file_id: uuid.UUID) -> int:
         """Counts total historical versions for a file."""
-        stmt = (
-            select(func.count())
-            .select_from(FileVersion)
-            .where(FileVersion.file_id == file_id)
-        )
+        stmt = select(func.count()).select_from(FileVersion).where(FileVersion.file_id == file_id)
         result = await self.session.execute(stmt)
         return result.scalar() or 0

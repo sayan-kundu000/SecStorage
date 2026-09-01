@@ -19,9 +19,7 @@ async def test_normal_user_blocked_from_admin_audit(async_client: AsyncClient) -
     )
     token = reg_resp.json()["data"]["tokens"]["access_token"]
 
-    resp = await async_client.get(
-        "/api/v1/audit", headers={"Authorization": f"Bearer {token}"}
-    )
+    resp = await async_client.get("/api/v1/audit", headers={"Authorization": f"Bearer {token}"})
     assert resp.status_code == 403
     payload = resp.json()
     assert payload["success"] is False
@@ -54,9 +52,7 @@ async def test_admin_user_allowed_audit_access(
         user.is_admin = True
         await session.commit()
 
-    resp = await async_client.get(
-        "/api/v1/audit", headers={"Authorization": f"Bearer {token}"}
-    )
+    resp = await async_client.get("/api/v1/audit", headers={"Authorization": f"Bearer {token}"})
     assert resp.status_code == 200
     assert resp.json()["success"] is True
 

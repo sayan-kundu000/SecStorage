@@ -35,7 +35,9 @@ class StarService:
         folder_id: uuid.UUID | None = None,
     ) -> StarResponse:
         """Stars a file or folder as favorite after authorization check."""
-        if (file_id is None and folder_id is None) or (file_id is not None and folder_id is not None):
+        if (file_id is None and folder_id is None) or (
+            file_id is not None and folder_id is not None
+        ):
             raise ValidationError("Exactly one of 'file_id' or 'folder_id' must be provided")
 
         if file_id is not None:
@@ -153,7 +155,9 @@ class StarService:
         folder_id: uuid.UUID | None = None,
     ) -> bool:
         """Unstars a file or folder as favorite."""
-        if (file_id is None and folder_id is None) or (file_id is not None and folder_id is not None):
+        if (file_id is None and folder_id is None) or (
+            file_id is not None and folder_id is not None
+        ):
             raise ValidationError("Exactly one of 'file_id' or 'folder_id' must be provided")
 
         if file_id is not None:
